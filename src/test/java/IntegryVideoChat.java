@@ -9,13 +9,12 @@ import java.util.concurrent.TimeUnit;
 
 public class IntegryVideoChat {
 
-        public static final String URL = "https://dev.integrivideo.com/demo/5e1c2564ada85052a99d079d";
+
 
         @Test
         public void ChatTest(){
             System.setProperty("webdriver.chrome.driver", "src/test/resources/webdrivers/chromedriver");
             ChromeDriver driver = new ChromeDriver();
-            driver.get(URL);
 
 
 

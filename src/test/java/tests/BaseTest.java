@@ -17,7 +17,7 @@ public class BaseTest {
 
         }
     @AfterMethod
-    public void closePage(){
+     public void closePage(){
         driver.quit();
     }
 }
