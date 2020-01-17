@@ -2,9 +2,13 @@ package tests;
 
 import org.testng.annotations.Test;
 import pages.IntegriChatPage;
+import pages.IntegriSettingsModal;
+import pages.IntegryFileUploadPage;
 
 public class IntegriChatTest extends BaseTest {
     IntegriChatPage chat;
+    IntegriSettingsModal setting;
+    IntegryFileUploadPage upload;
     @Test
     public void validateMessageSending(){
         String message = "Blabla";
@@ -54,18 +58,64 @@ public class IntegriChatTest extends BaseTest {
 
 
 
-        //input
-        //send
-        //validate
     }
                 @Test
-    public void editDeleteMessageTest(){
+    public void editDeleteMessage(){
         chat = new IntegriChatPage(driver);
                     chat.openPage();
                     chat.typeMessage("1234");
                     chat.sendMessageUsingEnter();
                     chat.editMessage("qwer");
                     chat.messageShouldContainText("qwer", 1);
+                    chat.deleteMessage();
+                    chat.typeMessage("error");
+                    chat.sendMessageUsingEnter();
+                    chat.messageShouldContainText("error", 2);
+                    chat.verifyErrorMessage("error");
+    }
+                @Test
+    public void scriptAndInvite(){
+        chat = new IntegriChatPage(driver);
+        chat.openPage();
+        chat.inviteClick();
+        chat.scriptCodeClick();
+    }
+                @Test
+    public void SettingsModal(){
+        chat = new IntegriChatPage(driver);
+        setting = new IntegriSettingsModal(driver);
 
-                }
+        chat.openPage();
+        setting.openSettingsModal();
+        setting.editUsername("Evgeny");
+        setting.editEmail("eugeny.noskov@gmail.com");
+        setting.editPhoto("12314534gfgdsgsdf");
+        setting.verifyUsername("Evgeny");
+        setting.verifyEmail("eugeny.noskov@gmail.com");
+        setting.verifyPhotoURL("12314534gfgdsgsdf");
+        setting.save();
+        setting.openSettingsModal();
+        setting.cancel();
+        setting.openSettingsModal();
+        setting.crossClick();
+
+    }
+        @Test
+    public void FileUpload(){
+        chat = new IntegriChatPage(driver);
+        upload = new IntegryFileUploadPage(driver);
+        chat.openPage();
+        upload.openUploadModal();
+        upload.FileUpload("/Users/ithub/Downloads/some-file.txt");
+        upload.startUpload();
+        upload.verifyAddedFile("some-file.txt");
+        upload.openUploadModal();
+        upload.FileUpload("/Users/ithub/Downloads/some-file.txt");
+        upload.FileUpload("/Users/ithub/Downloads/some-file.txt");
+        upload.startUpload();
+        upload.verifyMultipleAdd(3);
+
+
+
+        }
 }

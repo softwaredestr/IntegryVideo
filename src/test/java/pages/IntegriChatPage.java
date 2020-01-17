@@ -1,5 +1,6 @@
 package pages;
 
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -17,6 +18,8 @@ public class IntegriChatPage extends BasePage {
    private By EDIT_AREA = By.tagName("textarea");
    private By DELETE_BUTTON = By.cssSelector(".integri-chat-remove-message");
    private By ERROR_MESSAGE = By.cssSelector(".integri-notify-error");
+   private By INVITE_BUTTON = By.id("invite-users-to-chat");
+   private By SCRIPT_CODE = By.className("component-code");
     public static final String URL = "https://dev.integrivideo.com/demo/chat/new";
 
     //input
@@ -67,10 +70,35 @@ public class IntegriChatPage extends BasePage {
         driver.findElement(EDIT_AREA).clear();
         driver.findElement(EDIT_AREA).sendKeys(editedText);
         driver.findElement(EDIT_AREA).sendKeys(Keys.ENTER);
-        wait.until(ExpectedConditions.textToBe(MESSAGE_TEXT, editedText));
+        wait.until(ExpectedConditions.textToBe(MESSAGE_TEXT, editedText ));
 
 
     }
+    public void deleteMessage(){
+        driver.findElement(DELETE_BUTTON).click();
+        Alert alert = driver.switchTo().alert();
+        alert.accept();
+        wait.until(ExpectedConditions.textToBe(MESSAGE_TEXT, "removed..."));
+    }
+    public void verifyErrorMessage(String editedText){
+        driver.findElement(EDIT_BUTTON).click();
+        driver.findElement(EDIT_AREA).click();
+        driver.findElement(EDIT_AREA).clear();
+        driver.findElement(EDIT_AREA).sendKeys(editedText);
+        driver.findElement(EDIT_AREA).clear();
+        driver.findElement(EDIT_AREA).sendKeys(Keys.ENTER);
+        String error = "Message cannot be empty!";
+        wait.until(ExpectedConditions.textToBe(ERROR_MESSAGE, error));
+        String actualError = driver.findElement(ERROR_MESSAGE).getText();
+        Assert.assertEquals(actualError, error);
+    }
+    public void inviteClick(){
+        driver.findElement(INVITE_BUTTON).click();
+    }
+    public void scriptCodeClick(){
+        driver.findElement(SCRIPT_CODE).click();
+    }
+
 
 
 
