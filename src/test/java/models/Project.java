@@ -1,11 +1,9 @@
 package models;
 
-public class Project {
-    String projectName;
-    String description;
-    String domains;
+import java.util.ArrayList;
 
-    public Project(String projectName, String description, String domains) {
+public class Project {
+    public Project(String projectName, String description, ArrayList<String> domains) {
         this.projectName = projectName;
         this.description = description;
         this.domains = domains;
@@ -19,7 +17,7 @@ public class Project {
         this.description = description;
     }
 
-    public void setDomains(String domains) {
+    public void setDomains(ArrayList<String> domains) {
         this.domains = domains;
     }
 
@@ -31,7 +29,12 @@ public class Project {
         return description;
     }
 
-    public String getDomains() {
+    public ArrayList<String> getDomains() {
         return domains;
     }
+
+    String projectName;
+    String description;
+    ArrayList<String> domains;
+
 }
