@@ -2,15 +2,14 @@ package tests;
 
 import models.User;
 import org.testng.annotations.Test;
-import pages.SignUpPage;
+import pages.LogInPage;
 
-public class SignUpTest extends BaseTest {
+public class LogInTest extends BaseTest {
     @Test
-    public void SignUp(){
+    public void LogInForm(){
         User user = new User("qwerty@mailinator.com", "12345678");
-        new SignUpPage(driver)
+        new LogInPage(driver)
                 .openPage()
-                .signUp(user);
-
+                .LogIn(user);
     }
 }
