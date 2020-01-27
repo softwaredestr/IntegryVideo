@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class ProjectTest extends BaseTest {
+    ProjectsPage project;
     @Test
     public void Project(){
         User user = new User("qwerty@mailinator.com", "12345678");
@@ -23,10 +24,23 @@ public class ProjectTest extends BaseTest {
                 .addProject()
                 .fillFields(project)
                 .сreateProject()
-                .editProject();
-
-
-
+                .verifyCountProjects();
+    }
+    @Test
+    public void editProject(){
+        User user = new User("qwerty@mailinator.com", "12345678");
+        new LogInPage(driver)
+                .openPage()
+                .LogIn(user);
+         project = new ProjectsPage(driver);
+        project.verifyCountProjects();
+        project.clickProject(1);
+        project.isEditOpened();
+        project.clickEdit();
+        driver.navigate().back();
+        project.newComponent();
+        project.inputComponents(2, "qwerty");
+        project.create();
 
 
 

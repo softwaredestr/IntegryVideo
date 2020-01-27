@@ -1,11 +1,13 @@
 package pages;
 
 import models.Project;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 
 import java.util.List;
@@ -21,16 +23,16 @@ public class ProjectsPage extends BasePage{
     List<WebElement> domains;
     @FindBy(className = "btn")
     WebElement createButton;
-    @FindBy(className = "project")
-    List<WebElement> addedProject;
-    @FindBy(xpath = "//div[@class='col-2 actions']//a[contains(text(),'Edit')] ")
-    WebElement edit;
-    @FindBy(className = "integri-video app projects edit form")
-    WebElement editForm;
+     By addedProject = By.className("project");
+    //List<WebElement> addedProject;
+    By edit = By.xpath("//div[@class='col-2 actions']//a[contains(text(),'Edit')]");
+
+    By editForm = By.className("container-fluid");
+    //WebElement editForm;
     @FindBy(className = "component new")
     WebElement addComponent;
     @FindBy(xpath = "//option")
-    WebElement TypeSelect;
+    WebElement typeSelect;
     @FindBy(name = "name")
     WebElement componentName;
     public ProjectsPage(WebDriver driver) {
@@ -60,10 +62,34 @@ public class ProjectsPage extends BasePage{
         return this;
     }
     public int verifyCountProjects(){
-        return addedProject.size();
+        return driver.findElements(addedProject).size();
+
     }
-    public ProjectsPage editProject(){
-        addedProject.get(0).click();
+    public int clickProject(int Num){
+        verifyCountProjects();
+        driver.findElements(addedProject).get(Num).click();
+        return Num;
+    }
+    public ProjectsPage clickEdit(){
+        driver.findElement(edit).click();
+        return this;
+    }
+    public ProjectsPage isEditOpened(){
+        wait.until(ExpectedConditions.visibilityOfElementLocated(editForm));
+        return this;
+    }
+    public ProjectsPage newComponent(){
+        addComponent.click();
+        return this;
+    }
+    public ProjectsPage inputComponents(int option, String name){
+        Select select = new Select(typeSelect);
+        select.getAllSelectedOptions().get(option);
+        componentName.sendKeys(name);
+        return this;
+    }
+    public ProjectsPage create(){
+        createButton.click();
         return this;
     }
 
