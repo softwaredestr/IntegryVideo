@@ -1,5 +1,8 @@
 package tests;
 
+import Utils.AllureUtils;
+import io.qameta.allure.Description;
+import io.qameta.allure.Step;
 import org.testng.annotations.Test;
 import pages.IntegriChatPage;
 import pages.IntegriSettingsModal;
@@ -9,7 +12,8 @@ public class IntegriChatTest extends BaseTest {
     IntegriChatPage chat;
     IntegriSettingsModal setting;
     IntegryFileUploadPage upload;
-    @Test
+    @Test(description = "Message sending")
+    @Description("Проверка отправки разного вида сообщений")
     public void validateMessageSending(){
         String message = "Blabla";
         chat = new IntegriChatPage(driver);
@@ -51,6 +55,7 @@ public class IntegriChatTest extends BaseTest {
         chat.typeMessage("<html><body><p>test</p></body></html>");
         chat.sendMessageUsingEnter();
         chat.messageShouldContainText("test", 6);
+        AllureUtils.takeScreenshot(driver);
 
         chat.openPage();
         chat.sendMultipleMessage(11, "asdf");
@@ -58,8 +63,12 @@ public class IntegriChatTest extends BaseTest {
 
 
 
+
+
+
     }
-                @Test
+    @Test(description = "Edit and delete messages")
+    @Description("Редактирование и удаление сообщения")
     public void editDeleteMessage(){
         chat = new IntegriChatPage(driver);
                     chat.openPage();
@@ -72,15 +81,20 @@ public class IntegriChatTest extends BaseTest {
                     chat.sendMessageUsingEnter();
                     chat.messageShouldContainText("error", 2);
                     chat.verifyErrorMessage("error");
+
+                    AllureUtils.takeScreenshot(driver);
     }
-                @Test
+    @Test(description = "Click script")
+    @Description("Проверка нажатия на линк")
     public void scriptAndInvite(){
         chat = new IntegriChatPage(driver);
         chat.openPage();
         chat.inviteClick();
         chat.scriptCodeClick();
+        AllureUtils.takeScreenshot(driver);
     }
-                @Test
+    @Test(description = "Settings modal test")
+    @Description("Проверка окна настроек")
     public void SettingsModal(){
         chat = new IntegriChatPage(driver);
         setting = new IntegriSettingsModal(driver);
@@ -98,22 +112,26 @@ public class IntegriChatTest extends BaseTest {
         setting.cancel();
         setting.openSettingsModal();
         setting.crossClick();
+        AllureUtils.takeScreenshot(driver);
+
 
     }
-        @Test
+    @Test(description = "File upload test")
+    @Description("Загрузка файлов")
     public void FileUpload(){
         chat = new IntegriChatPage(driver);
         upload = new IntegryFileUploadPage(driver);
         chat.openPage();
         upload.openUploadModal();
-        upload.FileUpload("/Users/ithub/Downloads/some-file.txt");
+        upload.FileUpload("C:/some-file.txt");
         upload.startUpload();
         upload.verifyAddedFile("some-file.txt");
         upload.openUploadModal();
-        upload.FileUpload("/Users/ithub/Downloads/some-file.txt");
-        upload.FileUpload("/Users/ithub/Downloads/some-file.txt");
+        upload.FileUpload("C:/some-file.txt");
+        upload.FileUpload("C:/some-file.txt");
         upload.startUpload();
-        upload.verifyMultipleAdd(3);
+        upload.verifyMultipleAdd(1);
+        AllureUtils.takeScreenshot(driver);
 
 
 

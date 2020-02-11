@@ -1,5 +1,6 @@
 package pages;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -34,19 +35,23 @@ public class IntegriChatPage extends BasePage {
         super(driver);
     }
 
+    @Step("Open chat page")
     public void openPage(){
         driver.get(URL);
     }
-
+    @Step("Type message")
     public void typeMessage(String message){
         driver.findElement(MESSAGE_TEXT_AREA).sendKeys(message);
     }
+    @Step("Send message using button")
     public void sendMessageUsingButton(){
         driver.findElement(SEND_BUTTON).click();
     }
+    @Step("Send message using enter")
     public void sendMessageUsingEnter(){
         driver.findElement(MESSAGE_TEXT_AREA).sendKeys(Keys.ENTER);
     }
+    @Step("Send multiple message")
     public void sendMultipleMessage(int messagesCount, String text){
         for (int i = 1; i <= messagesCount; i++){
                 typeMessage(text);
@@ -57,6 +62,7 @@ public class IntegriChatPage extends BasePage {
             wait.until(ExpectedConditions.numberOfElementsToBe(MESSAGE_TEXT, i));
         }
     }
+    @Step("Verify trial message")
     public void verifyTrialMessage(){
         String trial = "This is trial version";
         wait.until(ExpectedConditions.visibilityOf(driver.findElement(TRIAL_MESSAGE_SCREEN)));
@@ -64,6 +70,7 @@ public class IntegriChatPage extends BasePage {
         Assert.assertTrue(actualTrial.contains(trial));
 
     }
+    @Step("Edit message")
     public void editMessage(String editedText){
         driver.findElement(EDIT_BUTTON).click();
         driver.findElement(EDIT_AREA).click();
@@ -74,12 +81,14 @@ public class IntegriChatPage extends BasePage {
 
 
     }
+    @Step("Delete message")
     public void deleteMessage(){
         driver.findElement(DELETE_BUTTON).click();
         Alert alert = driver.switchTo().alert();
         alert.accept();
         wait.until(ExpectedConditions.textToBe(MESSAGE_TEXT, "removed..."));
     }
+    @Step("Verify error message")
     public void verifyErrorMessage(String editedText){
         driver.findElement(EDIT_BUTTON).click();
         driver.findElement(EDIT_AREA).click();
@@ -92,9 +101,11 @@ public class IntegriChatPage extends BasePage {
         String actualError = driver.findElement(ERROR_MESSAGE).getText();
         Assert.assertEquals(actualError, error);
     }
+    @Step("Invite click")
     public void inviteClick(){
         driver.findElement(INVITE_BUTTON).click();
     }
+    @Step("Script code click")
     public void scriptCodeClick(){
         driver.findElement(SCRIPT_CODE).click();
     }

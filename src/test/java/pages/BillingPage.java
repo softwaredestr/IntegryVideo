@@ -3,6 +3,7 @@ package pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 
@@ -13,7 +14,7 @@ public class BillingPage extends BasePage {
     By addBtn = By.xpath("//button[@class='btn']");
     By addedCards = By.className("cards");
     By message = By.className("message");
-    By payPal = By.className("paypal-button-label-container");
+    By payPal = By.xpath("//iframe[@class='zoid-component-frame zoid-visible']");
 
 
     public BillingPage(WebDriver driver) {
@@ -29,7 +30,7 @@ public class BillingPage extends BasePage {
     }
     public BillingPage addClick(){
         driver.findElement(addBtn).click();
-        wait.until(ExpectedConditions.visibilityOf(driver.findElement(creditCardForm)));
+        wait.until(ExpectedConditions.elementToBeClickable(driver.findElement(addBtn)));
         return this;
     }
     public BillingPage isPageOpened(){
@@ -45,15 +46,18 @@ public class BillingPage extends BasePage {
         driver.findElements(cardInput).get(0).sendKeys(cardNum);
         driver.findElements(cardInput).get(1).click();
         driver.findElements(cardInput).get(1).sendKeys(month);
-        driver.findElements(cardInput).get(2).click();
         driver.findElements(cardInput).get(2).sendKeys(year);
-        driver.findElements(cardInput).get(3).click();
         driver.findElements(cardInput).get(3).sendKeys(name);
         return this;
     }
     public BillingPage verifyAddedCards(int expectedCount){
-        wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//h3[text()='Payment methods']"))));
+        wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.className("cards"))));
         Assert.assertEquals(driver.findElements(addedCards).size(), expectedCount);
+        return this;
+    }
+    public BillingPage payPalClick(){
+        wait.until(ExpectedConditions.elementToBeClickable(driver.findElement(payPal)));
+        driver.findElement(payPal).click();
         return this;
     }
 
