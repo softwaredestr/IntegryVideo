@@ -1,0 +1,28 @@
+package tests;
+
+import io.qameta.allure.Attachment;
+import models.Project;
+import models.User;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+
+import java.util.concurrent.TimeUnit;
+
+public class BaseTest {
+    WebDriver driver;
+    @BeforeMethod
+    public void setUp() {
+        System.setProperty("webdriver.chrome.driver", "src/test/resources/webdrivers/chromedriver");
+        driver = new ChromeDriver();
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+    }
+
+    @AfterMethod
+     public void closePage(){
+        driver.quit();
+    }
+}
