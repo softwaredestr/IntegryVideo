@@ -5,18 +5,20 @@ pipeline {
       // Install the Maven version configured as "M3" and add it to the path.
       maven "M3"
    }
-
-   stages {
+   parameters {
+     gitParameter branchFilter: 'origin/(.*)', defaultValue: 'master', name: 'BRANCH', type: 'PT_BRANCH'
+    }
+    stages {
       stage('Build') {
          steps {
             // Get some code from a GitHub repository
-            git 'https://github.com/softwaredestr/IntegryVideo'
+           git branch: "${params.BRANCH}", url: 'https://github.com/softwaredestr/IntegryVideo'
 
             // Run Maven on a Unix agent.
-           //sh "mvn -Dmaven.test.failure.ignore=true clean package"
+           // sh "mvn -Dmaven.test.failure.ignore=true clean package"
 
             // To run Maven on a Windows agent, use
-             bat "mvn -Dmaven.test.failure.ignore=true clean test"
+             bat "mvn -Dmaven.test.failure.ignore=true clean package"
          }
 
          post {
@@ -24,6 +26,7 @@ pipeline {
             // failed, record the test results and archive the jar file.
             success {
                junit '**/target/surefire-reports/TEST-*.xml'
+               archiveArtifacts 'target/*.jar'
             }
          }
       }
